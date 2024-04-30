@@ -8,33 +8,22 @@ const PORT = 8000;
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function createPublicPath(base) {
+  return path.join(__dirname, 'public', `${base}.html`);
+}
+
 const server = createServer(async (req, res) => {
   try {
     if (req.method === 'GET') {
-      let filePath, fileNotFound;
+      let filePath;
+      const fileName = req.url === '/' ? '/index' : req.url;
+      const routeOK = ['/index', '/about', '/contact'].includes(fileName);
 
-      switch (req.url) {
-        case '/': {
-          filePath = path.join(__dirname, 'public', 'index.html');
-          break;
-        }
-        case '/about': {
-          filePath = path.join(__dirname, 'public', 'about.html');
-          break;
-        }
-        case '/contact': {
-          filePath = path.join(__dirname, 'public', 'contact.html');
-          break;
-        }
-
-        default:
-          filePath = path.join(__dirname, 'public', '404.html');
-          fileNotFound = 404;
-          break;
-      }
+      filePath = createPublicPath(routeOK ? fileName : '404');
 
       const data = await fs.readFile(filePath);
-      res.writeHead(fileNotFound || 200, { 'Content-Type': 'text/html' });
+      res.statusCode = routeOK ? 200 : 404;
+      res.setHeader('Content-Type', 'text/html');
       res.write(data);
       res.end();
     } else {
