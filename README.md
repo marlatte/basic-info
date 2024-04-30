@@ -2,15 +2,12 @@
 
 My first backend development project: a simple server with 3 routes and a 404 page.
 
-## Demo
-
-👉 [Live Preview](#) 👈
-
 ## Skills Demonstrated
 
 - NodeJS
-  - Create servers
+  - Create servers with error handling
   - Build simple router
+  - Create absolute paths from relative paths
   - Debug Node with Devtools
 
 ## Acknowledgements
