@@ -16,12 +16,16 @@ app.get('/', (req, res) => {
   res.sendFile(createPublicPath('/index'));
 });
 
-app.get('/:route', (req, res) => {
-  const fileName = req.params.route;
-  const routeOK = ['about', 'contact'].includes(fileName);
-  const filePath = createPublicPath(routeOK ? fileName : '404');
+app.get('/about', (req, res) => {
+  res.sendFile(createPublicPath('about'));
+});
 
-  res.sendFile(filePath);
+app.get('/contact', (req, res) => {
+  res.sendFile(createPublicPath('contact'));
+});
+
+app.get('/*catchAll', (req, res) => {
+  res.sendFile(createPublicPath('404'));
 });
 
 app.listen(PORT, () => {
