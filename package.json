@@ -1,16 +1,16 @@
 {
   "name": "basic-info",
   "version": "1.0.0",
-  "description": "a simple server with 3 routes and a 404 page",
-  "main": "index.js",
+  "description": "A simple express server with 3 routes and a 404 page",
+  "main": "server.js",
   "private": "true",
   "type": "module",
   "scripts": {
-    "start": "nodemon --inspect server.js"
+    "start": "node --watch server.js"
   },
   "author": "",
   "license": "UNLICENSED",
-  "devDependencies": {
-    "nodemon": "^3.1.0"
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }

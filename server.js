@@ -1,7 +1,7 @@
-import { createServer } from 'http';
 import url from 'url';
 import path from 'path';
-import fs from 'fs/promises';
+import express from 'express';
+const app = express();
 const PORT = 8000;
 
 // Get current path
@@ -12,29 +12,18 @@ function createPublicPath(base) {
   return path.join(__dirname, 'public', `${base}.html`);
 }
 
-const server = createServer(async (req, res) => {
-  try {
-    if (req.method === 'GET') {
-      let filePath;
-      const fileName = req.url === '/' ? '/index' : req.url;
-      const routeOK = ['/index', '/about', '/contact'].includes(fileName);
-
-      filePath = createPublicPath(routeOK ? fileName : '404');
-
-      const data = await fs.readFile(filePath);
-      res.statusCode = routeOK ? 200 : 404;
-      res.setHeader('Content-Type', 'text/html');
-      res.write(data);
-      res.end();
-    } else {
-      throw new Error('Method not allowed');
-    }
-  } catch (error) {
-    res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end('Server error');
-  }
+app.get('/', (req, res) => {
+  res.sendFile(createPublicPath('/index'));
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port: ${PORT}`);
+app.get('/:route', (req, res) => {
+  const fileName = req.params.route;
+  const routeOK = ['about', 'contact'].includes(fileName);
+  const filePath = createPublicPath(routeOK ? fileName : '404');
+
+  res.sendFile(filePath);
+});
+
+app.listen(PORT, () => {
+  console.log(`Express app running on http://localhost:${PORT}`);
 });
